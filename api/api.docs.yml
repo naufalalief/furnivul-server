@@ -8,10 +8,11 @@ info:
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   contact:
     name: API Support
-    url: "www.github.com/naufalalief"
+    url: "https://github.com/naufalalief/"
+    email: "vaellouisse@gmail.com"
 servers:
-  - url: http://localhost:3000
-    description: Local server
+  - url: https://clever-gray-pocketbook.cyclic.app/
+    description: Cyclic App
 paths:
   /auth/login:
     post:
@@ -107,11 +108,92 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - User (Admin)
+      security:
+        - bearerAuth: []
+      summary: Get All User
+      description: Get All User as Admin
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/{id}:
+    get:
+      tags:
+        - User (Admin)
+      security:
+        - bearerAuth: []
+      summary: Get User
+      description: Get User by Id (Login as Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - User (Admin)
+      security:
+        - bearerAuth: []
+      summary: Delete User
+      description: Delete User as Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   /courier-services:
     get:
       tags:
-        - CourierService
+        - Courier Service
       security:
         - bearerAuth: []
       summary: Get Courier Services
@@ -137,11 +219,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     post:
       tags:
-        - CourierService
+        - Courier Service (Admin)
       security:
         - bearerAuth: []
       summary: Create Courier Service
-      description: Create Courier Service
+      description: Create Courier Service (must login as Admin)
       requestBody:
         content:
           application/json:
@@ -170,7 +252,7 @@ paths:
   /courier-services/{id}:
     get:
       tags:
-        - CourierService
+        - Courier Service
       security:
         - bearerAuth: []
       summary: Get Courier Service
@@ -200,13 +282,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Courier Service (Admin)
+      security:
+        - bearerAuth: []
+      summary: Update Courier Service
+      description: Update Courier Service (must login as Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierService"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     delete:
       tags:
-        - CourierService
+        - Courier Service (Admin)
       security:
         - bearerAuth: []
       summary: Delete Courier Service
-      description: Delete Courier Service
+      description: Delete Courier Service (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -228,37 +341,6 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-    put:
-      tags:
-        - CourierService
-      security:
-        - bearerAuth: []
-      summary: Update Courier Service
-      description: Update Courier Service
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CourierService"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SuccessResponse"
-        "400":
-          description: Bad Request
           content:
             application/json:
               schema:
@@ -293,11 +375,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     post:
       tags:
-        - Courier
+        - Courier (Admin)
       security:
         - bearerAuth: []
       summary: Create Courier
-      description: Create Courier
+      description: Create Courier (must login as Admin)
       requestBody:
         content:
           application/json:
@@ -358,11 +440,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     put:
       tags:
-        - Courier
+        - Courier (Admin)
       security:
         - bearerAuth: []
       summary: Update Courier
-      description: Update Courier
+      description: Update Courier (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -395,11 +477,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     delete:
       tags:
-        - Courier
+        - Courier (Admin)
       security:
         - bearerAuth: []
       summary: Delete Courier
-      description: Delete Courier
+      description: Delete Courier (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -429,7 +511,7 @@ paths:
   /product-categories:
     get:
       tags:
-        - ProductCategory
+        - Product Category
       security:
         - bearerAuth: []
       summary: Get Product Categories
@@ -450,11 +532,11 @@ paths:
 
     post:
       tags:
-        - ProductCategory
+        - Product Category (Admin)
       security:
         - bearerAuth: []
       summary: Create Product Category
-      description: Create Product Category
+      description: Create Product Category (must login as Admin)
       requestBody:
         content:
           application/json:
@@ -478,7 +560,7 @@ paths:
   /product-types:
     get:
       tags:
-        - ProductType
+        - Product Type
       security:
         - bearerAuth: []
       summary: Get Product Types
@@ -498,11 +580,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     post:
       tags:
-        - ProductType
+        - Product Type (Admin)
       security:
         - bearerAuth: []
       summary: Create Product Type
-      description: Create Product Type
+      description: Create Product Type (must login as Admin)
       requestBody:
         content:
           application/json:
@@ -526,7 +608,7 @@ paths:
   /product-types/{id}:
     get:
       tags:
-        - ProductType
+        - Product Type
       security:
         - bearerAuth: []
       summary: Get Product Type
@@ -552,11 +634,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     put:
       tags:
-        - ProductType
+        - Product Type (Admin)
       security:
         - bearerAuth: []
       summary: Update Product Type
-      description: Update Product Type
+      description: Update Product Type (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -584,11 +666,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     delete:
       tags:
-        - ProductType
+        - Product Type (Admin)
       security:
         - bearerAuth: []
       summary: Delete Product Type
-      description: Delete Product Type
+      description: Delete Product Type (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -613,7 +695,7 @@ paths:
   /product-categories/{id}:
     get:
       tags:
-        - ProductCategory
+        - Product Category
       security:
         - bearerAuth: []
       summary: Get Product Category
@@ -639,11 +721,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     put:
       tags:
-        - ProductCategory
+        - Product Category (Admin)
       security:
         - bearerAuth: []
       summary: Update Product Category
-      description: Update Product Category
+      description: Update Product Category (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -671,11 +753,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     delete:
       tags:
-        - ProductCategory
+        - Product Category (Admin)
       security:
         - bearerAuth: []
       summary: Delete Product Category
-      description: Delete Product Category
+      description: Delete Product Category (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -701,8 +783,6 @@ paths:
     get:
       tags:
         - Product
-      security:
-        - bearerAuth: []
       summary: Get Products
       description: Get Products
       responses:
@@ -719,12 +799,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
     post:
-      tags:
-        - Product
       security:
         - bearerAuth: []
+      tags:
+        - Product (Admin)
       summary: Create Product
-      description: Create Product
+      description: Create Product (must login as Admin)
       requestBody:
         content:
           application/json:
@@ -749,8 +829,6 @@ paths:
     get:
       tags:
         - Product
-      security:
-        - bearerAuth: []
       summary: Get Product
       description: Get Product
       parameters:
@@ -773,12 +851,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
     put:
-      tags:
-        - Product
       security:
         - bearerAuth: []
+      tags:
+        - Product (Admin)
       summary: Update Product
-      description: Update Product
+      description: Update Product (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -806,11 +884,11 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     delete:
       tags:
-        - Product
+        - Product (Admin)
       security:
         - bearerAuth: []
       summary: Delete Product
-      description: Delete Product
+      description: Delete Product (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -836,8 +914,6 @@ paths:
     get:
       tags:
         - Discuss
-      security:
-        - bearerAuth: []
       summary: Get Discuss
       description: Get Discuss
       responses:
@@ -963,6 +1039,187 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResponse"
 
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  
+  /discusses/{id}/replies:
+    get: 
+      tags:
+        - Reply
+      security:
+        - bearerAuth: []
+      summary: Get Discuss Replies
+      description: Get Discuss Replies
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscussReply"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Reply
+      security:
+        - bearerAuth: []
+      summary: Create Discuss Reply
+      description: Create Discuss Reply
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscussReply"
+      responses: 
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /discusses/{id}/replies/{replyId}:
+    get: 
+      tags:
+        - Reply
+      security:
+        - bearerAuth: []
+      summary: Get Discuss Reply
+      description: Get Discuss Reply
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: replyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiscussReply"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Reply
+      security:
+        - bearerAuth: []
+      summary: Update Discuss Reply
+      description: Update Discuss Reply
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: replyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DiscussReply"
+      responses: 
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Reply
+      security:
+        - bearerAuth: []
+      summary: Delete Discuss Reply
+      description: Delete Discuss Reply
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: replyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: 
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /reviews/data:
+    get:
+      tags:
+        - Review (Admin)
+      security:
+        - bearerAuth: []
+      summary: Get All Review Data
+      description: Get All Review Data (must login as Admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
         "400":
           description: Bad Request
           content:
@@ -1101,6 +1358,28 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /transactions/data:
+    get:
+      tags:
+        - Transaction (Admin)
+      security:
+        - bearerAuth: []
+      summary: Get All Transaction Data
+      description: Get All Transaction Data (must login as Admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /transactions:
     get:
       tags:
@@ -1206,11 +1485,11 @@ paths:
 
     delete:
       tags:
-        - Transaction
+        - Transaction (Admin)
       security:
         - bearerAuth: []
       summary: Delete Transaction
-      description: Delete Transaction
+      description: Delete Transaction (must login as Admin)
       parameters:
         - name: id
           in: path
@@ -1218,8 +1497,34 @@ paths:
           schema:
             type: string
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /transaction-details/data:
+    get:
+      tags:
+        - Transaction Details (Admin)
+      security:
+        - bearerAuth: []
+      summary: Get All Transaction Details Data
+      description: Get All Transaction Details Data (must login as Admin)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetails"
         "400":
           description: Bad Request
           content:
@@ -1230,7 +1535,7 @@ paths:
   /transaction-details:
     get:
       tags:
-        - TransactionDetails
+        - Transaction Details
       security:
         - bearerAuth: []
       summary: Get Transaction Details
@@ -1251,7 +1556,7 @@ paths:
 
     post:
       tags:
-        - TransactionDetails
+        - Transaction Details
       security:
         - bearerAuth: []
       summary: Create Transaction Details
@@ -1277,7 +1582,7 @@ paths:
   /transaction-details/{id}:
     get:
       tags:
-        - TransactionDetails
+        - Transaction Details
       security:
         - bearerAuth: []
       summary: Get Transaction Details
@@ -1300,7 +1605,7 @@ paths:
 
     put:
       tags:
-        - TransactionDetails
+        - Transaction Details
       security:
         - bearerAuth: []
       summary: Update Transaction Details
@@ -1315,7 +1620,34 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransactionDetails"
+              $ref: "#/components/schemas/TransactionDetailsEdit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetailsEdit"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Transaction Details (Admin)
+      security:
+        - bearerAuth: []
+      summary: Delete Transaction Details
+      description: Delete Transaction Details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -1330,22 +1662,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
-    delete:
+  /voucher:
+    get:
       tags:
-        - TransactionDetails
+        - Voucher
       security:
         - bearerAuth: []
-      summary: Delete Transaction Details
-      description: Delete Transaction Details
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      summary: Get Voucher
+      description: Get Voucher
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voucher"
         "400":
           description: Bad Request
           content:
@@ -1353,6 +1684,112 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+    post:
+      tags:
+        - Voucher (Admin)
+      security:
+        - bearerAuth: []
+      summary: Create Voucher
+      description: Create Voucher (must login as Admin)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Voucher"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voucher"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /voucher/{id}:
+    get:
+      tags:
+        - Voucher
+      security:
+        - bearerAuth: []
+      summary: Get Voucher
+      description: Get Voucher
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Voucher (Admin)
+      security:
+        - bearerAuth: []
+      summary: Update Voucher
+      description: Update Voucher (must login as Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Voucher"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voucher"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Voucher (Admin)
+      security:
+        - bearerAuth: []
+      summary: Delete Voucher
+      description: Delete Voucher (must login as Admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Voucher"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   securitySchemes:
     bearerAuth:
@@ -1468,7 +1905,7 @@ components:
         product_name:
           type: string
           example: Sofa
-        _idCategory:
+        _categoryId:
           type: string
           format: ObjectId
           example: 5f9b0b3b9b7b3b1b3c3b3b3b
@@ -1513,6 +1950,21 @@ components:
           type: string
           example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis
 
+    DiscussReply:
+      type: object
+      properties:
+        _discussId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _userId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        reply:
+          type: string
+          example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis
+
     Review:
       type: object
       properties:
@@ -1532,9 +1984,41 @@ components:
       properties:
         date:
           type: string
-          example: 2020-10-30T00:00:00.000Z
+          example: Just click execute because it will auto filled by current date and time
 
     TransactionDetails:
+      type: object
+      properties:
+        _transactionId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              _productId:
+                type: string
+                format: ObjectId
+                example: 5f9b0b3b9b7b3b1b3c3b3b3b
+              qty:
+                type: integer
+                example: 2
+        _courierId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _courierServiceId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _voucherId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b || null
+
+    TransactionDetailsEdit:
       type: object
       properties:
         _transactionId:
@@ -1553,12 +2037,35 @@ components:
           type: string
           format: ObjectId
           example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _voucherId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b || null
         qty:
           type: integer
           example: 2
-        subtotal:
+
+    Voucher:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Voucher 50000
+        description:
+          type: string
+          example: Potongan sebesar 50000
+        discount:
           type: integer
-          example: 2000000
+          example: 50000
+        code:
+          type: string
+          example: ABC123
+        start_date:
+          type: string
+          example: 2020-10-30
+        end_date:
+          type: string
+          example: 2020-11-30
 
     LoginResponse:
       type: object

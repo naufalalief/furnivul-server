@@ -1,4 +1,4 @@
-const ProductCategory = require("../../models/product/product.category");
+const Voucher = require("../../models/voucher/voucher");
 const {
   sendSuccessResponse,
   sendErrorResponse,
@@ -8,27 +8,26 @@ const Role = require("../../models/role/role");
 module.exports = {
   getAllData: async (req, res) => {
     try {
-      const productCategories = await ProductCategory.find();
+      const vouchers = await Voucher.find();
       const page = parseInt(req.query.page);
       const limit = parseInt(req.query.limit);
 
       if (!page || !limit) {
-        if (productCategories.length === 0) {
+        if (vouchers.length === 0) {
           return sendSuccessResponse(
             res,
             200,
             "Success",
-            "Product category is empty"
+            "Voucher is empty"
           );
         }
-
-        sendSuccessResponse(res, 200, "Success", productCategories);
+        sendSuccessResponse(res, 200, "Success", vouchers);
       } else {
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
         const result = {};
 
-        if (endIndex < productCategories.length) {
+        if (endIndex < vouchers.length) {
           result.next = {
             page: page + 1,
             limit: limit,
@@ -41,23 +40,14 @@ module.exports = {
             limit: limit,
           };
         }
-        result.productCategories = productCategories.slice(
-          startIndex,
-          endIndex
-        );
+        result.vouchers = vouchers.slice(startIndex, endIndex);
 
-        sendSuccessResponse(
-          res,
-          200,
-          "Get all product categories page " + page,
-          result
-        );
+        sendSuccessResponse(res, 200, "Get all vouchers page " + page, result);
       }
     } catch (error) {
       sendErrorResponse(res, 500, "Internal server error", error);
     }
   },
-
   getDatabyID: async (req, res) => {
     try {
       const { id } = req.params;
@@ -71,13 +61,22 @@ module.exports = {
         );
       }
 
-      const productCategory = await ProductCategory.findById(id);
-      sendSuccessResponse(res, 200, "Success", productCategory);
+      const voucher = await Voucher.findById(id);
+
+      if (!voucher) {
+        return sendErrorResponse(
+          res,
+          404,
+          "Voucher not found",
+          new Error("Voucher not found")
+        );
+      }
+
+      sendSuccessResponse(res, 200, "Success", voucher);
     } catch (error) {
       sendErrorResponse(res, 500, "Internal server error", error);
     }
   },
-
   updateData: async (req, res) => {
     try {
       const role = req.payload.role;
@@ -92,7 +91,9 @@ module.exports = {
         );
       }
 
-      let { id } = req.params;
+      const { id } = req.params;
+      let { name, discount, description, code, start_date, end_date } =
+        req.body;
 
       if (!id) {
         return sendErrorResponse(
@@ -103,37 +104,45 @@ module.exports = {
         );
       }
 
-      let { category, description } = req.body;
-      if (!category || !description) {
+      if (
+        !name ||
+        !discount ||
+        !description ||
+        !code ||
+        !start_date ||
+        !end_date
+      ) {
         return sendErrorResponse(
           res,
           400,
           "Bad request",
-          new Error("Category and description must be not empty")
+          new Error("Fields must be not empty")
         );
       }
 
-      const updateProductCategory = await ProductCategory.findByIdAndUpdate(
+      const currentDate = new Date();
+      const isActive = new Date(end_date) > currentDate;
+
+      const update = await Voucher.findByIdAndUpdate(
         id,
-        { category, description },
+        { name, discount, description, code, start_date, end_date, isActive },
         { new: true }
       );
 
-      if (!updateProductCategory) {
+      if (!update) {
         return sendErrorResponse(
           res,
           404,
-          "Not found",
-          new Error("Product category not found")
+          "Voucher not found",
+          new Error("Voucher not found")
         );
       }
 
-      sendSuccessResponse(res, 200, "Success", updateProductCategory);
+      sendSuccessResponse(res, 200, "Success", update);
     } catch (error) {
-      sendErrorResponse(res, 500, "Internal server error", error);
+      sendErrorResponse(res, 500, "Invernal server error", error);
     }
   },
-
   deleteData: async (req, res) => {
     try {
       const role = req.payload.role;
@@ -159,21 +168,21 @@ module.exports = {
         );
       }
 
-      const productCategory = await ProductCategory.findByIdAndDelete(id);
-      if (!productCategory) {
+      const voucher = await Voucher.findByIdAndDelete(id);
+      if (!voucher) {
         return sendErrorResponse(
           res,
           404,
-          "Not found",
-          new Error("Product category not found")
+          "Voucher not found",
+          new Error("Voucher not found")
         );
       }
-      sendSuccessResponse(res, 200, "Success");
+
+      sendSuccessResponse(res, 200, "Success", voucher);
     } catch (error) {
-      sendErrorResponse(res, 500, "Internal server error", error);
+      sendErrorResponse(res, 500, "Invernal server error", error);
     }
   },
-
   addData: async (req, res) => {
     try {
       const role = req.payload.role;
@@ -188,33 +197,62 @@ module.exports = {
         );
       }
 
-      let { category, description } = req.body;
-      if (!category || !description) {
+      let { name, discount, description, code, start_date, end_date } =
+        req.body;
+
+      if (
+        !name ||
+        !discount ||
+        !description ||
+        !code ||
+        !start_date ||
+        !end_date
+      ) {
         return sendErrorResponse(
           res,
           400,
           "Bad request",
-          new Error("Category and description must be not empty")
+          new Error(
+            "name, discount, description, code, start_date, end_date must be filled"
+          )
         );
       }
 
-      const checkCategory = await ProductCategory.find({ category });
-      if (checkCategory.length > 0) {
-        return sendErrorResponse(
-          res,
-          400,
-          "Bad request",
-          new Error("Category already exist")
-        );
-      }
+      const currentDate = new Date();
+      const isActive = new Date(end_date) > currentDate;
 
-      const newProductCategory = await ProductCategory.create({
-        category,
+      const voucher = await Voucher.create({
+        name,
+        discount,
         description,
+        code,
+        start_date,
+        end_date,
+        isActive,
       });
-      sendSuccessResponse(res, 200, "Success", newProductCategory);
+
+      sendSuccessResponse(res, 201, "Success", voucher);
     } catch (error) {
       sendErrorResponse(res, 500, "Internal server error", error);
     }
   },
 };
+
+const checkVoucherStatus = () => {
+  Voucher.find().then(vouchers => {
+    const currentDate = new Date();
+
+    vouchers.forEach(voucher => {
+      if (voucher.isActive === true) {
+        if (currentDate > voucher.end_date) {
+          voucher.isActive = false;
+          voucher.save().catch(error => console.error(error));
+        }
+      }
+    });
+  }).catch(error => console.error(error));
+};
+
+checkVoucherStatus();
+
+setInterval(checkVoucherStatus, 24 * 60 * 60 * 1000);

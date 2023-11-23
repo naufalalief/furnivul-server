@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema(
@@ -9,11 +9,16 @@ const transactionSchema = new Schema(
     },
     _userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     total: {
       type: Number,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "paid", "delivered", "canceled"],
+      default: "pending",
     },
   },
   {
@@ -21,6 +26,6 @@ const transactionSchema = new Schema(
   }
 );
 
-const Transaction = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
 module.exports = Transaction;

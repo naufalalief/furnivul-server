@@ -10,21 +10,23 @@ const productTypeRouter = require("./product/product.type.route");
 const productRouter = require("./product/product.route");
 const reviewRouter = require("./review/review.route");
 const discussRouter = require("./discuss/discuss.route.js");
+const replyRouter = require("./discuss/reply.route.js");
 const transactionRouter = require("./transactions/transaction.js");
 const transactionDetailRouter = require("./transactions/transaction.detail.js");
-const auth = require("../middleware/auth");
-
+const voucherRouter = require("./voucher/voucher.route.js");
+const { auth } = require("../middleware/auth");
 
 router.use("/auth", authRouter);
 router.use("/users", auth, userRouter);
-router.use("/courier-services", auth, courierServiceRouter)
+router.use("/courier-services", auth, courierServiceRouter);
 router.use("/couriers", auth, courierRouter);
 router.use("/product-categories", auth, productCategoryRouter);
 router.use("/product-types", auth, productTypeRouter);
-router.use("/products", auth, productRouter);
-router.use("/reviews", auth, reviewRouter);
-router.use("/discusses", auth, discussRouter);
+router.use("/products", productRouter);
+router.use("/reviews", reviewRouter);
+router.use("/discusses", discussRouter);
+router.use("/discusses/:id/replies", auth, replyRouter);
 router.use("/transactions", auth, transactionRouter);
 router.use("/transaction-details", auth, transactionDetailRouter);
-
+router.use("/voucher", auth, voucherRouter);
 module.exports = router;

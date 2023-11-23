@@ -31,7 +31,8 @@ app.use(indexRouter);
 app.get("/", (req, res) => {
   res.send(`
     <h1>Furnivul Server</h1>
-    <a href="/api-docs">Check Documentations</a>
+    <a href="/api-docs">Check Documentations</a><hr/>
+    Check <a href="https://github.com/naufalalief/furnivul-server">Github</a> for updates
   `);
 });
 app.listen(port, () => {

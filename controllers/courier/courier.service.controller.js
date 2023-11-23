@@ -1,17 +1,57 @@
 const CourierServices = require("../../models/courier/courier.service");
-const sendErrorResponse = require("../../handlers/error.handler");
-const sendSuccessResponse = require("../../handlers/success.handler");
+const {
+  sendSuccessResponse,
+  sendErrorResponse,
+} = require("../../helpers/response.helper");
+const Role = require("../../models/role/role");
 
 module.exports = {
   getAllData: async (req, res) => {
     try {
       const courierServices = await CourierServices.find();
-      sendSuccessResponse(
-        res,
-        200,
-        "Get all courier services success",
-        courierServices
-      );
+
+      const page = parseInt(req.query.page);
+      const limit = parseInt(req.query.limit);
+
+      if (!page || !limit) {
+        if (courierServices.length === 0) {
+          console.log("Courier service is empty");
+          return sendSuccessResponse(
+            res,
+            200,
+            "Success",
+            "Courier service is empty"
+          );
+        }
+
+        sendSuccessResponse(res, 200, "Success", courierServices);
+      } else {
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const result = {};
+
+        if (endIndex < courierServices.length) {
+          result.next = {
+            page: page + 1,
+            limit: limit,
+          };
+        }
+
+        if (startIndex > 0) {
+          result.previous = {
+            page: page - 1,
+            limit: limit,
+          };
+        }
+        result.courierServices = courierServices.slice(startIndex, endIndex);
+
+        sendSuccessResponse(
+          res,
+          200,
+          "Get all courier services page " + page,
+          result
+        );
+      }
     } catch (error) {
       sendErrorResponse(res, 500, "Error get all courier services", error);
     }
@@ -25,7 +65,7 @@ module.exports = {
         return sendErrorResponse(
           res,
           400,
-          "Id not found",
+          "Bad request",
           new Error("Id not found or empty")
         );
       }
@@ -44,13 +84,25 @@ module.exports = {
 
   updateData: async (req, res) => {
     try {
+      const role = req.payload.role;
+
+      const checkRole = await Role.findById(role);
+      if (checkRole.role !== "admin") {
+        return sendErrorResponse(
+          res,
+          403,
+          "Forbidden",
+          new Error("You are not admin")
+        );
+      }
+
       const { id } = req.params;
 
       if (!id) {
         return sendErrorResponse(
           res,
           400,
-          "Id not found",
+          "Bad request",
           new Error("Id not found or empty")
         );
       }
@@ -60,7 +112,7 @@ module.exports = {
         return sendErrorResponse(
           res,
           400,
-          "Name, description, etd, cost required",
+          "Bad request",
           new Error("Name, description, etd, cost must be not empty")
         );
       }
@@ -70,6 +122,16 @@ module.exports = {
         { name, description, etd, cost },
         { new: true }
       );
+
+      if (!updateCourierService) {
+        return sendErrorResponse(
+          res,
+          404,
+          "Not found",
+          new Error("Courier service not found")
+        );
+      }
+
       sendSuccessResponse(
         res,
         200,
@@ -82,13 +144,25 @@ module.exports = {
   },
   deleteData: async (req, res) => {
     try {
+      const role = req.payload.role;
+
+      const checkRole = await Role.findById(role);
+      if (checkRole.role !== "admin") {
+        return sendErrorResponse(
+          res,
+          403,
+          "Forbidden",
+          new Error("You are not admin")
+        );
+      }
+
       const { id } = req.params;
 
       if (!id) {
         return sendErrorResponse(
           res,
           400,
-          "Id not found",
+          "Bad request",
           new Error("Id not found or empty")
         );
       }
@@ -97,8 +171,8 @@ module.exports = {
       if (!courierservices) {
         return sendErrorResponse(
           res,
-          400,
-          "Courier service not found",
+          404,
+          "Not found",
           new Error("Courier service not found")
         );
       }
@@ -110,12 +184,24 @@ module.exports = {
 
   addData: async (req, res) => {
     try {
+      const role = req.payload.role;
+
+      const checkRole = await Role.findById(role);
+      if (checkRole.role !== "admin") {
+        return sendErrorResponse(
+          res,
+          403,
+          "Forbidden",
+          new Error("You are not admin")
+        );
+      }
+
       let { name, description, etd, cost } = req.body;
       if (!name || !description || !etd || !cost) {
         return sendErrorResponse(
           res,
           400,
-          "Name, description, etd, cost required",
+          "Bad request",
           new Error("Name, description, etd, cost must be not empty")
         );
       }
@@ -130,7 +216,7 @@ module.exports = {
         res,
         200,
         "Add courier service success",
-        {_id: newCourierService.id, ...newCourierService._doc}
+        newCourierService
       );
     } catch (error) {
       sendErrorResponse(res, 500, "Error add courier service", error);

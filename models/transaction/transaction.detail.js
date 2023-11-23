@@ -19,6 +19,10 @@ const transactionDetailSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Courier Service",
     },
+    _voucherId: {
+      type: Schema.Types.ObjectId,
+      ref: "Voucher",
+    },
     qty: {
       type: Number,
       required: true,
