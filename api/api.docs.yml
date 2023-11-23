@@ -1,0 +1,1580 @@
+openapi: "3.0.2"
+info:
+  title: Furnivul Server
+  version: "1.0"
+  description: Server for Furnivul Web App with JWT Auth
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  contact:
+    name: API Support
+    url: "www.github.com/naufalalief"
+servers:
+  - url: http://localhost:3000
+    description: Local server
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: Login to get JWT Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register
+      description: Register to get JWT Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users:
+    put:
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      summary: Update User
+      description: Update User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /courier-services:
+    get:
+      tags:
+        - CourierService
+      security:
+        - bearerAuth: []
+      summary: Get Courier Services
+      description: Get Courier Services
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierService"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - CourierService
+      security:
+        - bearerAuth: []
+      summary: Create Courier Service
+      description: Create Courier Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierService"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /courier-services/{id}:
+    get:
+      tags:
+        - CourierService
+      security:
+        - bearerAuth: []
+      summary: Get Courier Service
+      description: Get Courier Service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierService"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - CourierService
+      security:
+        - bearerAuth: []
+      summary: Delete Courier Service
+      description: Delete Courier Service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - CourierService
+      security:
+        - bearerAuth: []
+      summary: Update Courier Service
+      description: Update Courier Service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierService"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /couriers:
+    get:
+      tags:
+        - Courier
+      security:
+        - bearerAuth: []
+      summary: Get Courier
+      description: Get Courier
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Courier"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Courier
+      security:
+        - bearerAuth: []
+      summary: Create Courier
+      description: Create Courier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Courier"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /couriers/{id}:
+    get:
+      tags:
+        - Courier
+      security:
+        - bearerAuth: []
+      summary: Get Courier
+      description: Get Courier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Courier"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Courier
+      security:
+        - bearerAuth: []
+      summary: Update Courier
+      description: Update Courier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Courier"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Courier
+      security:
+        - bearerAuth: []
+      summary: Delete Courier
+      description: Delete Courier
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /product-categories:
+    get:
+      tags:
+        - ProductCategory
+      security:
+        - bearerAuth: []
+      summary: Get Product Categories
+      description: Get Product Categories
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCategory"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    post:
+      tags:
+        - ProductCategory
+      security:
+        - bearerAuth: []
+      summary: Create Product Category
+      description: Create Product Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductCategory"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /product-types:
+    get:
+      tags:
+        - ProductType
+      security:
+        - bearerAuth: []
+      summary: Get Product Types
+      description: Get Product Types
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - ProductType
+      security:
+        - bearerAuth: []
+      summary: Create Product Type
+      description: Create Product Type
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /product-types/{id}:
+    get:
+      tags:
+        - ProductType
+      security:
+        - bearerAuth: []
+      summary: Get Product Type
+      description: Get Product Type
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - ProductType
+      security:
+        - bearerAuth: []
+      summary: Update Product Type
+      description: Update Product Type
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - ProductType
+      security:
+        - bearerAuth: []
+      summary: Delete Product Type
+      description: Delete Product Type
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /product-categories/{id}:
+    get:
+      tags:
+        - ProductCategory
+      security:
+        - bearerAuth: []
+      summary: Get Product Category
+      description: Get Product Category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCategory"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - ProductCategory
+      security:
+        - bearerAuth: []
+      summary: Update Product Category
+      description: Update Product Category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductCategory"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - ProductCategory
+      security:
+        - bearerAuth: []
+      summary: Delete Product Category
+      description: Delete Product Category
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /products:
+    get:
+      tags:
+        - Product
+      security:
+        - bearerAuth: []
+      summary: Get Products
+      description: Get Products
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Product
+      security:
+        - bearerAuth: []
+      summary: Create Product
+      description: Create Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /products/{id}:
+    get:
+      tags:
+        - Product
+      security:
+        - bearerAuth: []
+      summary: Get Product
+      description: Get Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Product
+      security:
+        - bearerAuth: []
+      summary: Update Product
+      description: Update Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      tags:
+        - Product
+      security:
+        - bearerAuth: []
+      summary: Delete Product
+      description: Delete Product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /discusses:
+    get:
+      tags:
+        - Discuss
+      security:
+        - bearerAuth: []
+      summary: Get Discuss
+      description: Get Discuss
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discuss"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    post:
+      tags:
+        - Discuss
+      security:
+        - bearerAuth: []
+      summary: Create Discuss
+      description: Create Discuss
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Discuss"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /discusses/{id}:
+    get:
+      tags:
+        - Discuss
+      security:
+        - bearerAuth: []
+      summary: Get Discuss
+      description: Get Discuss
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discuss"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      tags:
+        - Discuss
+      security:
+        - bearerAuth: []
+      summary: Update Discuss
+      description: Update Discuss
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Discuss"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Discuss
+      security:
+        - bearerAuth: []
+      summary: Delete Discuss
+      description: Delete Discuss
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /reviews:
+    get:
+      tags:
+        - Review
+      security:
+        - bearerAuth: []
+      summary: Get Review
+      description: Get Review
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    post:
+      tags:
+        - Review
+      security:
+        - bearerAuth: []
+      summary: Create Review
+      description: Create Review
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Review"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /reviews/{id}:
+    get:
+      tags:
+        - Review
+      security:
+        - bearerAuth: []
+      summary: Get Review
+      description: Get Review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      tags:
+        - Review
+      security:
+        - bearerAuth: []
+      summary: Update Review
+      description: Update Review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Review"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Review
+      security:
+        - bearerAuth: []
+      summary: Delete Review
+      description: Delete Review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /transactions:
+    get:
+      tags:
+        - Transaction
+      security:
+        - bearerAuth: []
+      summary: Get Transaction
+      description: Get Transaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      tags:
+        - Transaction
+      security:
+        - bearerAuth: []
+      summary: Create Transaction
+      description: Create Transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /transactions/{id}:
+    put:
+      tags:
+        - Transaction
+      security:
+        - bearerAuth: []
+      summary: Update Transaction
+      description: Update Transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    get:
+      tags:
+        - Transaction
+      security:
+        - bearerAuth: []
+      summary: Get Transaction
+      description: Get Transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Transaction
+      security:
+        - bearerAuth: []
+      summary: Delete Transaction
+      description: Delete Transaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /transaction-details:
+    get:
+      tags:
+        - TransactionDetails
+      security:
+        - bearerAuth: []
+      summary: Get Transaction Details
+      description: Get Transaction Details
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetails"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    post:
+      tags:
+        - TransactionDetails
+      security:
+        - bearerAuth: []
+      summary: Create Transaction Details
+      description: Create Transaction Details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionDetails"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetails"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /transaction-details/{id}:
+    get:
+      tags:
+        - TransactionDetails
+      security:
+        - bearerAuth: []
+      summary: Get Transaction Details
+      description: Get Transaction Details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      tags:
+        - TransactionDetails
+      security:
+        - bearerAuth: []
+      summary: Update Transaction Details
+      description: Update Transaction Details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionDetails"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionDetails"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - TransactionDetails
+      security:
+        - bearerAuth: []
+      summary: Delete Transaction Details
+      description: Delete Transaction Details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    Register:
+      type: object
+      properties:
+        fullname:
+          type: string
+          example: Mona Hoshinova
+        email:
+          type: string
+          format: email
+          example: moon@gmail.com
+        password:
+          type: string
+          example: mona123
+
+    User:
+      type: object
+      properties:
+        fullname:
+          type: string
+          example: Mona Hoshinova
+          readOnly: true
+        email:
+          type: string
+          format: email
+          example: moon@gmail.com
+          readOnly: true
+        password:
+          type: string
+          example: mona123
+          readOnly: true
+        phone:
+          type: string
+        province:
+          type: string
+        district:
+          type: string
+        subdistrict:
+          type: string
+        zipcode:
+          type: integer
+
+    Courier:
+      type: object
+      properties:
+        courier:
+          type: string
+          example: JNE
+        _idCourierService:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+          example:
+            - 5f9b0b3b9b7b3b1b3c3b3b3b
+            - 5f9b0b3b9b7b3b1b3c3b3b3c
+            - 5f9b0b3b9b7b3b1b3c3b3b3d
+
+    CourierService:
+      type: object
+      properties:
+        name:
+          type: string
+          example: OKE
+        description:
+          type: string
+          example: Ongkos Kirim Ekonomis
+        etd:
+          type: string
+          example: 2-3 hari
+        cost:
+          type: integer
+          example: 10000
+
+    ProductCategory:
+      type: object
+      properties:
+        category:
+          type: string
+          example: Living Room
+        description:
+          type: string
+          example: Furniture untuk ruang tamu
+
+    ProductType:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Sofa
+        description:
+          type: string
+          example: Sofa untuk ruang tamu
+
+    Product:
+      type: object
+      properties:
+        product_name:
+          type: string
+          example: Sofa
+        _idCategory:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        product_description:
+          type: string
+          example: Sofa untuk ruang tamu
+        _typeId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        product_material:
+          type: string
+          example: Kayu
+        product_rate:
+          type: integer
+          example: 4
+        product_sold:
+          type: integer
+          example: 10
+        product_review:
+          type: integer
+          example: 5
+        product_price:
+          type: integer
+          example: 1000000
+        product_image:
+          type: string
+          example: https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png
+
+    Discuss:
+      type: object
+      properties:
+        _userId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _productId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        comment:
+          type: string
+          example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis
+
+    Review:
+      type: object
+      properties:
+        _productId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        rating:
+          type: integer
+          example: 4
+        comment:
+          type: string
+          example: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, quis
+
+    Transaction:
+      type: object
+      properties:
+        date:
+          type: string
+          example: 2020-10-30T00:00:00.000Z
+
+    TransactionDetails:
+      type: object
+      properties:
+        _transactionId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _productId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _courierId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        _courierServiceId:
+          type: string
+          format: ObjectId
+          example: 5f9b0b3b9b7b3b1b3c3b3b3b
+        qty:
+          type: integer
+          example: 2
+        subtotal:
+          type: integer
+          example: 2000000
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: JWT Token
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Success Message
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Error Message
